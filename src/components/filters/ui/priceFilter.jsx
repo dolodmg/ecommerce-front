@@ -12,7 +12,7 @@ const roboto = Roboto(
 export default function PriceFilter({ minPrice, maxPrice, setMinPrice, setMaxPrice }) {
     return (
         <div>
-            <p className={`${roboto.className} text-xs font-medium text-zinc-700`}>
+            <p className={`${roboto.className} text-xs font-medium text-zinc-800`}>
             PRECIO
             </p>
             <div className="flex flex-row gap-2">

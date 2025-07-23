@@ -10,12 +10,12 @@ const roboto = Roboto(
 
 const AddItems = ({ quantity = 1, onAdd, onRemove }) => {
   return (
-    <div className="flex items-center justify-between text-md font-extralight border-2 border-slate-700 rounded-full px-4 w-full">
-      <button onClick={onRemove} className="px-3 py-1 text-lg font-bold hover:bg-slate-700 hover:text-white rounded-full transition">
+    <div className={`${roboto.className} flex items-center justify-between bg-slate-100 border border-slate-300 rounded-full px-3 py-1 font-normal`}>
+      <button onClick={onRemove} className="px-3 py-1 text-lg hover:bg-slate-700 hover:text-white rounded-full transition">
         —
       </button>
       <span className="mx-2 text-md">{quantity}</span>
-      <button onClick={onAdd} className="px-3.5 py-1 text-lg font-bold hover:bg-slate-700 hover:text-white rounded-full transition">
+      <button onClick={onAdd} className="px-3.5 py-1 text-lg hover:bg-slate-700 hover:text-white rounded-full transition">
         +
       </button>
     </div>

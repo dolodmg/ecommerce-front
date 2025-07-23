@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import PriceFilter from '@/components/filters/ui/priceFilter';
 import FilterButton from '@/components/filters/ui/filterButton';
 import AlbumFormatFilter from './albumFormatFilter';
+import AlbumGenreFilter from './albumGenreFilter';
 
 const AlbumFilters = () => {
     const router = useRouter();
@@ -29,9 +30,10 @@ const AlbumFilters = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center mt-4">
+    <div className="flex flex-col gap-2">
       <AlbumFormatFilter />
-      <div className='flex flex-col items-start justify-self-start w-full ml-2 mt-4'>
+      <AlbumGenreFilter />
+      <div className='flex flex-col items-start justify-self-start w-full'>
         <PriceFilter
           minPrice={minPrice}
           maxPrice={maxPrice}
