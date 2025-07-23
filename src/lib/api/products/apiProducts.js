@@ -15,13 +15,14 @@ export async function updateStock(idProduct, quantity) { //Actualiza el stock de
     return await apiRequest(`${BASE_URL}/${idProduct}/stock`, 'PUT', quantity, 'application/json', false);
 }
 
-export async function getFiltered(category, minPrice, maxPrice, genre, albumFormat) { //Obtiene productos por rango de precio
+export async function getFiltered(category, minPrice, maxPrice, genre, albumFormat, albumGenre) { //Obtiene productos por rango de precio
     const queryParams = [];
     if (category && category !== '') queryParams.push(`category=${category}`);
     if (minPrice && minPrice !== '') queryParams.push(`minPrice=${minPrice}`);
     if (maxPrice && maxPrice !== '') queryParams.push(`maxPrice=${maxPrice}`);
     if (genre && genre !== '') queryParams.push(`genre=${genre}`);
     if (albumFormat && albumFormat !== '') queryParams.push(`albumFormat=${albumFormat}`);
+    if (albumGenre && albumGenre !== '') queryParams.push(`albumGenre=${albumGenre}`);
     const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
     return await apiRequest(`${BASE_URL}/get/filtered${queryString}`, 'GET', null, 'application/json', false);
 }

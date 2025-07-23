@@ -38,3 +38,7 @@ export async function deleteAlbum(idProduct) { //Elimina logicamente un álbum p
 export async function getFormats() { //Obtiene los formatos de álbumes
     return await apiRequest(`${BASE_URL}/get/formats`, 'GET', null, 'application/json', false);
 }
+
+export async function getAlbumGenres() { //Obtiene los géneros de álbumes
+    return await apiRequest(`${BASE_URL}/get/genres`, 'GET', null, 'application/json', false);
+}

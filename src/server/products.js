@@ -16,7 +16,7 @@ export async function updateStockAction(idProduct, quantity) {
     return data;
 }
 
-export async function getFilteredAction(category, minPrice, maxPrice, genre, albumFormat) {
-    const { data } = await getFiltered(category, minPrice, maxPrice, genre, albumFormat);
+export async function getFilteredAction(category, minPrice, maxPrice, genre, albumFormat, albumGenre) {
+    const { data } = await getFiltered(category, minPrice, maxPrice, genre, albumFormat, albumGenre);
     return data;
 }
