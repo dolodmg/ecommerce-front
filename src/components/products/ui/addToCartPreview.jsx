@@ -1,8 +1,10 @@
 'use client'
 import React, { useState } from "react";
-import ProductStockAlert from "./productStockAlert";
+import ProductStockAlert from "@/components/products/ui/productStockAlert";
 import { Roboto } from "next/font/google";
 import { ShoppingBasket } from "lucide-react";
+import { useCart } from "@/hooks/useCart";
+import { useCartData } from "@/hooks/useCartData";
 
 const roboto = Roboto(
   { subsets: ['latin'], 
@@ -12,14 +14,27 @@ const roboto = Roboto(
 
 const AddToCartPreview = ({ product }) => {
   const [showAlert, setShowAlert] = useState(false);
-  const handleAddToCart = () => {
-    if (product.stock === 0) {
+  const { add } = useCart();
+  const { getItemById } = useCartData();
+
+  const handleAddToCart = async () => {
+    // Obtener cantidad actual en el carrito
+    const itemInCart = getItemById(product.idProduct);
+    const currentQuantity = itemInCart ? itemInCart.quantity : 0;
+    
+    // Verificar si agregar 1 más excedería el stock
+    if (currentQuantity + 1 > product.stock) {
       setShowAlert(true);
-      setTimeout(() => setShowAlert(false), 5000);
+      setTimeout(() => setShowAlert(false), 3000);
       return;
-    } else {
+    }
+
+    try {
+      await add(product, 1);
       console.log(`Producto ${product.name} agregado al carrito con cantidad 1`);
-    } 
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
   }
   return (
     <div className="relative flex flex-col items-center w-full">
@@ -32,7 +47,7 @@ const AddToCartPreview = ({ product }) => {
       </button>
       {showAlert && (
         <div className="absolute top-full mt-2 w-full flex justify-center">
-          <ProductStockAlert product={product} />
+          <ProductStockAlert description={null} />
         </div>
       )}
     </div>

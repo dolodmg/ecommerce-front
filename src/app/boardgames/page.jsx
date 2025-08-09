@@ -1,11 +1,11 @@
 'use client'
 import React, { useState, useEffect } from "react";
-import { getFilteredAction } from "@/server/products";
+import { getFilteredAction } from "@/server/products/products";
 import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/products/ui/productCard";
 import { Inter } from "next/font/google";
 import { FiFilter } from "react-icons/fi";
-import BoardgameFilters from "@/components/filters/ui/boardgames/boardgameFilters";
+import BoardgameFilters from "@/components/filters/boardgames/boardgameFilters";
 
 const inter = Inter(
   { subsets: ['latin'], 

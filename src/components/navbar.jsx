@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Inter } from 'next/font/google';
+import { CartSheet } from './cart/sheet';
 
 const inter = Inter(
   { subsets: ['latin'], 
@@ -35,6 +36,9 @@ export default function Navbar() {
           </Link>
         </li>
       </ul>
+      <div className="ml-6 flex items-center">
+        <CartSheet />
+      </div>
     </nav>
   );
 }

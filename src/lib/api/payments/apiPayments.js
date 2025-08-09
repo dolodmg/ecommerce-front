@@ -27,14 +27,14 @@ export async function getPaymentsByPriceRange(minPrice, maxPrice) { // Obtiene p
     return await apiRequest(`${BASE_URL}/price`, 'GET', { minPrice, maxPrice }, 'application/json', false);
 }
 
-export async function createPayment(payment) { // Crea un nuevo pago
-    return await apiRequest(`${BASE_URL}/post`, 'POST', payment, 'application/json', false);
-}
-
 export async function changeStatus(idPayment, status) { // Cambia el estado de un pago
     return await apiRequest(`${BASE_URL}/${idPayment}`, 'PUT', status, 'application/json', false);
 }
 
 export async function deletePayment(idPayment) { // Elimina lógicamente un pago por su ID
     return await apiRequest(`${BASE_URL}/${idPayment}`, 'DELETE', null, 'application/json', false);
+}
+
+export async function processPaymentWithMercadoPago(paymentData) { // Procesa un pago con Mercado Pago
+    return await apiRequest(`${BASE_URL}/process-mp`, 'POST', paymentData, 'application/json', false);
 }

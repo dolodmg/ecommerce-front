@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { getGenresAction } from '@/server/books';
+import { getGenresAction } from '@/server/products/books';
 import { Inter } from "next/font/google";
 
 const inter = Inter(

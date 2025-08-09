@@ -1,8 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import PriceFilter from '@/components/filters/ui/priceFilter';
-import FilterButton from '@/components/filters/ui/filterButton';
+import PriceFilter from '@/components/filters/priceFilter';
+import FilterButton from '@/components/filters/filterButton';
 
 const BoardgameFilters = () => {
     const router = useRouter();

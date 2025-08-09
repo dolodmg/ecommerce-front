@@ -1,15 +1,22 @@
 'use client';
 import React from "react";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Newsreader } from "next/font/google";
 
+const newsreader = Newsreader({ subsets: ['latin'], weight: ['300'] });
 
-export default function ProductStockAlert({ product }) {
+export const ProductStockAlert = ({ description }) => {
+    console.log("Descripción recibida:", description); 
     return (
-        <Alert variant="destructive" className="bg-transparent mt-2 border-red-400">
+        <Alert variant="destructive" className={`${newsreader.className} bg-transparent mt-2 border-red-400`}>
             <AlertTitle>Stock insuficente</AlertTitle>
-            <AlertDescription>
-            <p>¡Solo hay {product.stock} unidades disponibles! Por favor, ajustá la cantidad.</p>
-            </AlertDescription>
+            { description && (
+                <AlertDescription>
+                    <p>{description}</p>
+                </AlertDescription>
+            )}
         </Alert>
     )
 }
+
+export default ProductStockAlert;

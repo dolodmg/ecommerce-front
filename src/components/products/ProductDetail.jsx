@@ -1,8 +1,12 @@
-import React from "react";
+'use client';
+import React, { useState } from "react";
 import { Roboto, Inter, Newsreader } from "next/font/google";
 import AddItems from "@/components/products/ui/addItems";
-import AddToCart from "@/components/products/ui/addToCart";
 import { albumFormatLabels, albumGenreLabels, bookGenreLabels } from "@/utils/enumLabels";
+import ProductStockAlert from "@/components/products/ui/productStockAlert";
+import Button from "@/components/ui/button";
+import { useCart } from "@/hooks/useCart";
+import { useCartData } from "@/hooks/useCartData";
 
 const roboto = Roboto({ subsets: ['latin'], weight: ['400', '700'] });
 const inter = Inter({ subsets: ['latin'], weight: ['200', '300', '400', '500', '600', '700'] });
@@ -12,6 +16,29 @@ const ProductDetail = ({ product, quantity, onAdd, onRemove }) => {
   const isBook = product.category === "BOOKS";
   const isMusic = product.category === "MUSIC";
   const isBoardgame = product.category === "BOARDGAMES";
+   const [showAlert, setShowAlert] = useState(false);
+  const { add } = useCart();
+  const { getItemById } = useCartData();
+
+  const handleAddToCart = async () => {
+      // Obtener cantidad actual en el carrito
+      const itemInCart = getItemById(product.idProduct);
+      const currentQuantity = itemInCart ? itemInCart.quantity : 0;
+      
+      // Verificar si la cantidad total excedería el stock
+      if (currentQuantity + quantity > product.stock) {
+        setShowAlert(true);
+        setTimeout(() => setShowAlert(false), 3000);
+        return;
+      }
+
+      try {
+        await add(product, quantity);
+      } catch (error) {
+        console.error("Error adding to cart:", error);
+        alert("Error al agregar al carrito");
+      }
+    }
 
   return (
     <div className={`${newsreader.className} max-w-4xl mx-auto p-6 md:p-10 my-8 w-full`}>
@@ -43,11 +70,14 @@ const ProductDetail = ({ product, quantity, onAdd, onRemove }) => {
               onRemove={onRemove}
               className="w-full"
             />
-            <AddToCart 
-              product={product} 
-              quantity={quantity}
-              className="w-full"
-            />
+            <div className="relative flex flex-col items-center w-full">
+              <Button onClick={handleAddToCart} text="AGREGAR AL CARRITO" className="py-3 px-6 mb-2 text-sm rounded-full text-white bg-slate-700 w-full" />
+              {showAlert && (
+                <div className="absolute top-full mt-2 w-full flex justify-center">
+                  <ProductStockAlert description={null} />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

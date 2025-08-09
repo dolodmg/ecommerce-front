@@ -1,11 +1,11 @@
-import React from "react";
 
-export default function ProductImage({ product }) {
+
+export const ProductImage = ({ product, className }) => {
     return (
-        <img
-            className="w-90 h-90 object-cover"
+        <img 
+            className={className}
             src={"/images/tayalbum.png"}
             alt={product.name}
-          />
+            />
     );
 }

@@ -1,9 +1,11 @@
 'use client'
 import React, { useState, useEffect } from "react";
-import { getProductByIdAction } from "@/server/products";
+import { getProductByIdAction } from "@/server/products/products";
 import ProductDetail from "@/components/products/ProductDetail";
+import { useParams } from "next/navigation";
 
-export default function Product({ idProduct = 302 }) {
+export default function Product( ) {
+    const { idProduct } = useParams(); 
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);

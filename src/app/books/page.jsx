@@ -1,9 +1,9 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { getFilteredAction } from '@/server/products';
+import { getFilteredAction } from '@/server/products/products';
 import ProductCard from '@/components/products/ui/productCard';
-import BookFilters from '@/components/filters/ui/books/BookFilters';
+import BookFilters from '@/components/filters/books/BookFilters';
 import { Inter } from 'next/font/google';
 import { FiFilter } from "react-icons/fi";
 

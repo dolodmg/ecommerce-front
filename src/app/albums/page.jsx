@@ -1,10 +1,10 @@
 'use client'
 import React, { useState, useEffect } from "react";
-import { getFilteredAction } from "@/server/products";
+import { getFilteredAction } from "@/server/products/products";
 import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/products/ui/productCard";
 import { Inter } from "next/font/google";
-import AlbumFilters from "@/components/filters/ui/albums/albumFilters";
+import AlbumFilters from "@/components/filters/albums/albumFilters";
 import { FiFilter } from "react-icons/fi"; 
 
 const inter = Inter(
