@@ -1,8 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import PriceFilter from '@/components/filters/priceFilter';
-import FilterButton from '@/components/filters/filterButton';
+import PriceFilter from '@/components/common/priceFilter';
+import FilterButton from '@/components/common/filterButton';
 import AlbumFormatFilter from './albumFormatFilter';
 import AlbumGenreFilter from './albumGenreFilter';
 

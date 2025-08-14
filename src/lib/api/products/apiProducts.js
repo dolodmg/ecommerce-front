@@ -3,11 +3,11 @@ import { apiRequest } from '../../apiRequest';
 
 const BASE_URL = 'http://localhost:8082/products';
 
-export async function getProducts() { //Obtiene la lista de todos los productos
+export async function getProducts() {
     return await apiRequest(`${BASE_URL}/get/all`, 'GET', null, 'application/json', false);
 }
 
-export async function getProductById(idProduct) { //Obtiene un producto por su ID
+export async function getProductById(idProduct) {
     return await apiRequest(`${BASE_URL}/get/${idProduct}`, 'GET', null, 'application/json', false);
 }
 
@@ -15,7 +15,7 @@ export async function updateStock(idProduct, quantity) { //Actualiza el stock de
     return await apiRequest(`${BASE_URL}/${idProduct}/stock`, 'PUT', quantity, 'application/json', false);
 }
 
-export async function getFiltered(category, minPrice, maxPrice, genre, albumFormat, albumGenre) { //Obtiene productos por rango de precio
+export async function getFiltered(category, minPrice, maxPrice, genre, albumFormat, albumGenre) {
     const queryParams = [];
     if (category && category !== '') queryParams.push(`category=${category}`);
     if (minPrice && minPrice !== '') queryParams.push(`minPrice=${minPrice}`);

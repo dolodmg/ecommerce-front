@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect } from "react";
 import { getProductByIdAction } from "@/server/products/products";
-import ProductDetail from "@/components/products/ProductDetail";
+import ProductDetail from "@/components/common/ProductDetail";
 import { useParams } from "next/navigation";
 
 export default function Product( ) {
@@ -15,7 +15,6 @@ export default function Product( ) {
           try {
             const product = await getProductByIdAction(idProduct);
             setProduct(product);
-            console.log('Producto obtenido:', product);   
           } catch (err) {
             setError('Error al obtener los detalles del producto');
           } finally {

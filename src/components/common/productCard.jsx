@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getProductByIdAction } from "@/server/products/products";
 import { Roboto } from "next/font/google";
-import ProductStockAlert from "@/components/products/ui/productStockAlert";
+import ProductStockAlert from "@/components/common/productStockAlert";
 import { ProductImage } from "./productImage";
 import Button from "@/components/ui/button";
 import { ShoppingBasket } from "lucide-react";

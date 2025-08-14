@@ -3,30 +3,30 @@ import { apiRequest } from '../../apiRequest';
 
 const BASE_URL = 'http://localhost:8081/carts';
 
-export async function getCarts() { // Obtiene la lista de todos los carritos
+export async function getCarts() {
     return await apiRequest(`${BASE_URL}/all`, 'GET', null, 'application/json', false);
 }
 
-export async function getCart(idCart) { // Obtiene un carrito por su ID
+export async function getCart(idCart) {
     return await apiRequest(`${BASE_URL}/${idCart}`, 'GET', null, 'application/json', false);
 }
 
-export async function getCartByUserId(idUser) { // Obtiene un carrito por el ID del usuario
+export async function getCartByUserId(idUser) {
     return await apiRequest(`${BASE_URL}/cart-by-user/${idUser}`, 'GET', null, 'application/json', false);
 }
 
-export async function createCart(cart) { // Crea un nuevo carrito
+export async function createCart(cart) {
     return await apiRequest(`${BASE_URL}`, 'POST', cart, 'application/json', false);
 }   
 
-export async function addItemToCart(idCart, item) { // Añade un item al carrito
+export async function addItemToCart(idCart, item) {
     return await apiRequest(`${BASE_URL}/add-item/${idCart}`, 'POST', item, 'application/json', false);
 }
 
-export async function removeItemFromCart(idCart, idProduct) { // Elimina un item del carrito
+export async function removeItemFromCart(idCart, idProduct) {
     return await apiRequest(`${BASE_URL}/${idCart}/items/${idProduct}`, 'DELETE', null, 'application/json', false);
 }
 
-export async function clearCart(idCart) { // Limpia todos los ítems de un carrito
+export async function clearCart(idCart) {
     return await apiRequest(`${BASE_URL}/clear/${idCart}`, 'PATCH', null, 'application/json', false);
 }

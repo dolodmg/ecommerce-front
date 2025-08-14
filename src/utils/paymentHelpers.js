@@ -1,4 +1,3 @@
-// Helper functions for payment processing
 export const PAYMENT_STATUS = {
   PENDING: 'pending',
   APPROVED: 'approved',
@@ -16,7 +15,6 @@ export const ORDER_STATUS = {
 };
 
 export const parsePaymentError = (error) => {
-  // Errores específicos de Mercado Pago
   const mpErrors = {
     '205': 'Ingresa el número de tu tarjeta.',
     '208': 'Elige un mes.',
@@ -58,14 +56,12 @@ export const parsePaymentError = (error) => {
 export const validateCardData = (formData) => {
   const errors = {};
   
-  // Validar nombre del titular
   if (!formData.cardholderName?.trim()) {
     errors.cardholderName = 'El nombre del titular es requerido';
   } else if (formData.cardholderName.trim().length < 2) {
     errors.cardholderName = 'El nombre debe tener al menos 2 caracteres';
   }
   
-  // Validar número de tarjeta
   const cardNumber = formData.cardNumber?.replace(/\s/g, '') || '';
   if (!cardNumber) {
     errors.cardNumber = 'El número de tarjeta es requerido';
@@ -75,13 +71,11 @@ export const validateCardData = (formData) => {
     errors.cardNumber = 'El número de tarjeta solo debe contener dígitos';
   }
   
-  // Validar mes de expiración
   const month = parseInt(formData.expirationMonth);
   if (!month || month < 1 || month > 12) {
     errors.expirationMonth = 'Mes inválido (1-12)';
   }
   
-  // Validar año de expiración
   const year = parseInt(formData.expirationYear);
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
@@ -92,7 +86,6 @@ export const validateCardData = (formData) => {
     errors.expirationYear = 'La tarjeta ha expirado';
   }
   
-  // Validar código de seguridad
   const securityCode = formData.securityCode?.trim() || '';
   if (!securityCode) {
     errors.securityCode = 'El código de seguridad es requerido';
@@ -102,7 +95,6 @@ export const validateCardData = (formData) => {
     errors.securityCode = 'El código de seguridad solo debe contener dígitos';
   }
   
-  // Validar email
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!formData.email?.trim()) {
     errors.email = 'El email es requerido';
@@ -110,7 +102,6 @@ export const validateCardData = (formData) => {
     errors.email = 'Email inválido';
   }
   
-  // Validar documento
   const docNumber = formData.docNumber?.trim() || '';
   if (!docNumber) {
     errors.docNumber = 'El número de documento es requerido';
@@ -124,13 +115,9 @@ export const validateCardData = (formData) => {
 };
 
 export const formatCardNumber = (value) => {
-  // Remover todo lo que no sea dígito
   const cleaned = value.replace(/\D/g, '');
   
-  // Agregar espacios cada 4 dígitos
   const formatted = cleaned.replace(/(.{4})/g, '$1 ').trim();
-  
-  // Limitar a 19 caracteres (16 dígitos + 3 espacios)
   return formatted.substring(0, 19);
 };
 

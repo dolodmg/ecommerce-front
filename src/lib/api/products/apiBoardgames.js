@@ -3,19 +3,19 @@ import { apiRequest } from '../../apiRequest';
 
 const BASE_URL = 'http://localhost:8082/boardgames';
 
-export async function getAll() { //Obtiene la lista de todos los juegos de mesa
+export async function getAll() {
     return await apiRequest(`${BASE_URL}/get/all`, 'GET', null, 'application/json', false);
 }
 
-export async function getBoardGame(idProduct) { //Obtiene un juego de mesa por su ID
+export async function getBoardGame(idProduct) {
     return await apiRequest(`${BASE_URL}/get/${idProduct}`, 'GET', null, 'application/json', false);
 }
 
-export async function getBoardGamesByBrand(brand) { //Obtiene juegos de mesa por marca
+export async function getBoardGamesByBrand(brand) {
     return await apiRequest(`${BASE_URL}/get/by-brand`, 'GET', brand, 'application/json', false);
 }
 
-export async function getBoardGamesByPriceRange(minPrice, maxPrice) { //Obtiene juegos de mesa en un rango de precios
+export async function getBoardGamesByPriceRange(minPrice, maxPrice) {
     return await apiRequest(`${BASE_URL}/get/by-price-range`, 'GET', { minPrice, maxPrice }, 'application/json', false);
 }
 

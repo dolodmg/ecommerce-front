@@ -6,7 +6,6 @@ import { Newsreader } from "next/font/google";
 const newsreader = Newsreader({ subsets: ['latin'], weight: ['300'] });
 
 export const ProductStockAlert = ({ description }) => {
-    console.log("Descripción recibida:", description); 
     return (
         <Alert variant="destructive" className={`${newsreader.className} bg-transparent mt-2 border-red-400`}>
             <AlertTitle>Stock insuficente</AlertTitle>

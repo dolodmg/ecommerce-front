@@ -1,9 +1,9 @@
 'use client';
 import React, { useState } from "react";
 import { Roboto, Inter, Newsreader } from "next/font/google";
-import AddItems from "@/components/products/ui/addItems";
+import AddItems from "@/components/common/addItems";
 import { albumFormatLabels, albumGenreLabels, bookGenreLabels } from "@/utils/enumLabels";
-import ProductStockAlert from "@/components/products/ui/productStockAlert";
+import ProductStockAlert from "@/components/common/productStockAlert";
 import Button from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
 import { useCartData } from "@/hooks/useCartData";
@@ -42,9 +42,7 @@ const ProductDetail = ({ product, quantity, onAdd, onRemove }) => {
 
   return (
     <div className={`${newsreader.className} max-w-4xl mx-auto p-6 md:p-10 my-8 w-full`}>
-      {/* Layout principal */}
       <div className="flex flex-col md:flex-row gap-8">
-        {/* Imagen */}
         <div className="flex-shrink-0 flex justify-center items-start w-80 h-80">
           <img
             src={product.image || "/images/tayalbum.png"}
@@ -52,7 +50,6 @@ const ProductDetail = ({ product, quantity, onAdd, onRemove }) => {
             className="w-70 h-80 object-cover"
           />
         </div>
-        {/* Info principal */}
         <div className="flex-1 flex flex-col gap-1">
           <h1 className="text-sm md:text-3xl font-light text-zinc-800">{product.name}</h1>
           {(isBook || isMusic ) && (
@@ -62,7 +59,6 @@ const ProductDetail = ({ product, quantity, onAdd, onRemove }) => {
             </p>
           )}
           <p className={`${inter.className} text-2xl font-semibold text-slate-700`}>${product.price}</p>
-          {/* Botones de cantidad y añadir al carrito */}
           <div className="flex flex-col gap-3 w-full max-w-xs mt-2">
             <AddItems 
               quantity={quantity} 
@@ -81,12 +77,10 @@ const ProductDetail = ({ product, quantity, onAdd, onRemove }) => {
           </div>
         </div>
       </div>
-      {/* Descripción */}
       <div className="mt-8">
         <h2 className="text-2xl font-medium text-zinc-800 mb-2 italic">Descripción</h2>
         <p className={`${roboto.className} border-zinc-600 border p-4 text-zinc-800 leading-relaxed text-sm font-normal`}>{product.description}</p>
       </div>
-      {/* Ficha técnica */}
       <div className="mt-8">
         <h2 className="text-2xl font-medium text-zinc-800 mb-2 border-zinc-600 border-b pb-2">Ficha técnica</h2>
         <div className={`${roboto.className} text-sm text-zinc-800 font-normal gap-y-2`}>

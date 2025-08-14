@@ -1,28 +1,36 @@
+import { useRouter } from "next/navigation";
 import { useCartData } from "@/hooks/useCartData";
 import { useCartActions } from "@/hooks/useCartActions";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import { useOrders } from "@/hooks/useOrders";
 
 /**
  * Componente que muestra el resumen del carrito (totales y acciones)
- * Responsabilidad única: Mostrar información de totales y botones de acción
+ * Responsabilidad única: Mostrar información de totales y crear orden para redirección
  */
 export function CartSummary({ 
-    onCheckout,
+    onOrderCreated,
     showClearButton = true,
     className,
-    ...props 
+    ...restProps 
 }) {
     const { 
         total, 
         subtotal, 
         itemsCount, 
         isEmpty,
-        isLoading 
+        isLoading,
+        cartId: idCart
     } = useCartData();
     
     const { clearCartItems, isOperating } = useCartActions();
+    const { createOrder, isCreatingOrder } = useOrders();
+    const router = useRouter();
+
+    // Filtrar props para evitar pasar props no válidas al DOM
+    const { onCheckout, ...domProps } = restProps;
 
     // Calcular impuestos (ejemplo: 10%)
     const taxRate = 0.10;
@@ -38,29 +46,48 @@ export function CartSummary({
         }
     };
 
-    const handleCheckout = () => {
-        if (onCheckout) {
-            onCheckout({
-                items: itemsCount,
-                subtotal,
-                taxes,
-                total: subtotal + taxes
-            });
+    const handleCheckout = async () => {
+        // Por ahora usamos un idUser hardcodeado, en el futuro se puede obtener del contexto de usuario
+        const idUser = 1;
+        
+        if (!idCart) {
+            console.error('No se puede proceder al checkout: ID del carrito no disponible');
+            return;
+        }
+        if (!idUser) {
+            console.error('No se puede proceder al checkout: ID del usuario no disponible');
+            return;
+        }
+        
+        try {
+            const orderData = await createOrder(idCart, idUser);
+            console.log('✅ Orden creada exitosamente:', orderData);
+            
+            // Notificar al componente padre que se creó la orden
+            if (onOrderCreated) {
+                onOrderCreated(orderData);
+            }
+            
+            // Redirigir a la página de pagos con el ID de la orden
+            router.push(`/payments/${orderData.idOrder}`);
+            
+        } catch (error) {
+            console.error('Error al procesar el checkout:', error);
         }
     };
 
     if (isEmpty) {
         return (
-            <div className={cn("p-4 text-center", className)} {...props}>
+            <div className={cn("p-4 text-center", className)} {...domProps}>
                 <p className="text-gray-500">Tu carrito está vacío</p>
             </div>
         );
     }
 
-    const isActionDisabled = isLoading || isOperating || isEmpty;
+    const isActionDisabled = isLoading || isOperating || isEmpty || isCreatingOrder;
 
     return (
-        <div className={cn("p-4 space-y-4", className)} {...props}>
+        <div className={cn("p-4 space-y-4", className)} {...domProps}>
             {/* Resumen de cantidades */}
             <div className="text-sm text-gray-600">
                 {itemsCount} {itemsCount === 1 ? 'producto' : 'productos'} en tu carrito
@@ -98,7 +125,9 @@ export function CartSummary({
                     className="w-full"
                     size="lg"
                 >
-                    {isLoading ? 'Cargando...' : 'Iniciar Compra'}
+                    {isCreatingOrder ? 'Creando orden...' : 
+                     isLoading ? 'Cargando...' : 
+                     'Iniciar compra'}
                 </Button>
 
                 {showClearButton && (
@@ -108,7 +137,7 @@ export function CartSummary({
                         disabled={isActionDisabled}
                         className="w-full"
                     >
-                        Vaciar Carrito
+                        Vaciar carrito
                     </Button>
                 )}
             </div>

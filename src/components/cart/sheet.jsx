@@ -3,9 +3,9 @@ import { useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useCartData } from "@/hooks/useCartData";
-import CartIcon from "./components/CartIcon";
-import CartItemList from "./components/CartItemList";
-import CartSummary from "./components/CartSummary";
+import CartIcon from "./CartIcon";
+import CartItemList from "./CartItemList";
+import CartSummary from "./CartSummary";
 import { cn } from "@/lib/utils";
 
 /**
@@ -21,16 +21,14 @@ export function CartSheet({
     const [isOpen, setIsOpen] = useState(false);
     const { itemsCount, isEmpty } = useCartData();
 
-    const handleCheckout = (summaryData) => {
-        setIsOpen(false); // Cerrar el sheet
+    const handleOrderCreated = (orderData) => {
+        setIsOpen(false); // Cerrar el sheet cuando se crea la orden
         
         if (onCheckout) {
-            onCheckout(summaryData);
-        } else {
-            // Navegación por defecto al checkout
-            // Aquí podrías usar router.push('/checkout')
-            console.log('Proceeding to checkout:', summaryData);
+            onCheckout({ order: orderData });
         }
+        
+        console.log('Orden creada, cerrando carrito:', orderData);
     };
 
     const defaultTrigger = (
@@ -72,7 +70,7 @@ export function CartSheet({
                 {/* Resumen del carrito */}
                 <div className="flex-shrink-0 border-t border-gray-100 mt-4">
                     <CartSummary 
-                        onCheckout={handleCheckout}
+                        onOrderCreated={handleOrderCreated}
                         showClearButton={true}
                     />
                 </div>

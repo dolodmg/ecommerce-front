@@ -26,7 +26,6 @@ const cartSlice = createSlice({
         addItem: (state, action) => {
             const { product, quantity, idItem } = action.payload;
 
-            // Valida que los datos requeridos estén presentes
             if (!product || !product.idProduct || typeof quantity !== 'number') {
                 console.error("cartSlice.addItem - Invalid item data:", action.payload);
                 return;
@@ -72,7 +71,6 @@ const cartSlice = createSlice({
     },
 });
 
-// Selectores memoizados para optimizar rendimiento
 export const selectCart = (state) => state.cart;
 
 export const selectCartItems = createSelector(

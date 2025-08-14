@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from "react";
-import ProductStockAlert from "@/components/products/ui/productStockAlert";
+import ProductStockAlert from "@/components/common/productStockAlert";
 import { Roboto } from "next/font/google";
 import { ShoppingBasket } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
@@ -31,7 +31,6 @@ const AddToCartPreview = ({ product }) => {
 
     try {
       await add(product, 1);
-      console.log(`Producto ${product.name} agregado al carrito con cantidad 1`);
     } catch (error) {
       console.error("Error adding to cart:", error);
     }
