@@ -3,15 +3,14 @@ import 'server-only';
 
 export async function apiRequest(
     endpoint, 
-    method = 'GET', 
-    body = null, 
-    contentType = 'application/json', 
+    method = 'GET',
+    body = null,
+    contentType = 'application/json',
     requiresAuth = false) {
     let token;
 
-
     const url = new URL(endpoint)
-  
+
     const options = {
       method,
       headers: {}
@@ -28,12 +27,20 @@ export async function apiRequest(
     if (body) {
       options.body = contentType === 'application/json' ? JSON.stringify(body) : body
     }
-  
+
     const res = await fetch(url, options)
-  
+
     if (!res.ok) {
-      const errorData = await res.json()
-      console.log(errorData)
+      let errorData;
+      const contentType = res.headers.get('content-type');
+      
+      if (contentType && contentType.includes('application/json')) {
+        errorData = await res.json();
+      } else {
+        const textResponse = await res.text();
+        throw new Error(`Server returned HTML instead of JSON. Status: ${res.status}`);
+      }
+      
       throw new Error(`${errorData.message || 'Error desconocido'}`)
     }
   

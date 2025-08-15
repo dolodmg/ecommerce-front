@@ -3,23 +3,23 @@ import { apiRequest } from '../../apiRequest';
 
 const BASE_URL = 'http://localhost:8082/albums';
 
-export async function getAll() { //Obtiene la lista de todos los albums
+export async function getAll() {
     return await apiRequest(`${BASE_URL}/all`, 'GET', null, 'application/json', false);
 }
 
-export async function getAlbum(idProduct) { //Obtiene un álbum por su ID
+export async function getAlbum(idProduct) {
     return await apiRequest(`${BASE_URL}/${idProduct}`, 'GET', null, 'application/json', false);
 }
 
-export async function getAlbumsByArtist(firstName, lastName) { //Obtiene los álbumes de un artista por su nombre y apellido
+export async function getAlbumsByArtist(firstName, lastName) {
     return await apiRequest(`${BASE_URL}/get/by-artist`, 'GET', { firstName, lastName }, 'application/json', false);
 }
 
-export async function getAlbumsByFormat(format) { //Obtiene los álbumes por su formato
+export async function getAlbumsByFormat(format) {
     return await apiRequest(`${BASE_URL}/get/by-format`, 'GET', format, 'application/json', false);
 }
 
-export async function getAlbumsByPriceRange(minPrice, maxPrice) { //Obtiene álbumes por rango de precio
+export async function getAlbumsByPriceRange(minPrice, maxPrice) {
     return await apiRequest(`${BASE_URL}/get/by-price?minPrice=${minPrice}&maxPrice=${maxPrice}`, 'GET', null, 'application/json', false);
 }
 
@@ -35,10 +35,10 @@ export async function deleteAlbum(idProduct) { //Elimina logicamente un álbum p
     return await apiRequest(`${BASE_URL}/delete/${idProduct}`, 'DELETE', null, 'application/json', false);
 }
 
-export async function getFormats() { //Obtiene los formatos de álbumes
+export async function getFormats() {
     return await apiRequest(`${BASE_URL}/get/formats`, 'GET', null, 'application/json', false);
 }
 
-export async function getAlbumGenres() { //Obtiene los géneros de álbumes
+export async function getAlbumGenres() {
     return await apiRequest(`${BASE_URL}/get/genres`, 'GET', null, 'application/json', false);
 }
