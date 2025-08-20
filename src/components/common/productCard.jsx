@@ -61,7 +61,7 @@ export default function ProductCard({ idProduct }) {
     if (loading) return <p>Cargando producto</p>;
     if (error) return <p>{error}</p>;
     return (
-        <div className={`flex flex-col w-40`}>
+        <div className={`flex flex-col w-50 p-4 border border-zinc-200 rounded-sm`}>
             <Link href={`/products/${product.idProduct}`} className="block">
                 <ProductImage product={product} className="object-cover w-full h-40 my-1 cursor-pointer hover:opacity-90 transition-opacity"/>
             </Link>

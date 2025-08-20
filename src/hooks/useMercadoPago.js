@@ -85,6 +85,7 @@ export const useMercadoPago = (publicKey) => {
       };
 
       const token = await mp.createCardToken(tokenData);
+      console.log('Card token created:', token);
       return token;
     } catch (error) {
       throw error;
@@ -97,10 +98,20 @@ export const useMercadoPago = (publicKey) => {
     }
 
     try {
-      return await mp.getPaymentMethods();
+      // Obtener métodos de pago con filtros básicos para tarjetas de crédito
+      return await mp.getPaymentMethods({
+        bin: null, // Se puede especificar el BIN de la tarjeta si se tiene
+        payment_method_id: null // Se puede filtrar por método específico
+      });
     } catch (error) {
       console.error('Error getting payment methods:', error);
-      throw error;
+      // Si falla con parámetros, intentar sin parámetros
+      try {
+        return await mp.getPaymentMethods();
+      } catch (fallbackError) {
+        console.error('Error getting payment methods (fallback):', fallbackError);
+        throw fallbackError;
+      }
     }
   };
 

@@ -2,7 +2,7 @@ import CategoryCard from "./categoryCard";
 
 export default function CategoriesBanner() {
     return (
-        <div className="flex flex-wrap justify-center gap-12 p-4">
+        <div className="flex flex-wrap justify-center gap-30 p-4">
             <CategoryCard
                 name="Álbumes"
                 imageUrl="/images/categories/album.png"

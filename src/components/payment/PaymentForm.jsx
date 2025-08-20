@@ -16,8 +16,8 @@ const roboto = Roboto({
 });
 
 export const PaymentForm = ({ order, onSuccess, onError, onCancel }) => {
-  const { createCardToken, isLoaded, error: mpError, isLoading: mpLoading } = useMercadoPago(MERCADO_PAGO_CONFIG.MP_PUBLIC_KEY);
-  
+  const { createCardToken, isLoaded, error: mpError, isLoading: mpLoading, mp } = useMercadoPago(MERCADO_PAGO_CONFIG.MP_PUBLIC_KEY);
+
   const [formData, setFormData] = useState({
     cardholderName: '',
     cardNumber: '',
@@ -71,6 +71,21 @@ export const PaymentForm = ({ order, onSuccess, onError, onCancel }) => {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
   };
+  
+  const findPaymentMethodId = (cardToken, paymentMethods) => {
+    // cardToken.card_type puede ser: "visa", "master", "amex", etc.
+    const cardType = cardToken.card_type?.toLowerCase();
+
+    // Buscar el payment method que coincida con el tipo de tarjeta
+    const method = paymentMethods.find(pm => pm.id.toLowerCase() === cardType);
+
+    if (!method) {
+      throw new Error(`No se encontró un método de pago compatible para la tarjeta: ${cardType}`);
+    }
+
+    return method.id;
+  };
+
 
   const validateForm = () => {
     const newErrors = validateCardData(formData);
@@ -79,90 +94,170 @@ export const PaymentForm = ({ order, onSuccess, onError, onCancel }) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
+  e.preventDefault();
 
-    // Verificar que Mercado Pago esté cargado
-    if (!isLoaded) {
-      setPaymentError('El sistema de pagos aún se está cargando. Por favor, espera un momento e intenta nuevamente.');
-      return;
-    }
+  // Validar formulario
+  if (!validateForm()) return;
 
-    // Verificar que tengamos la public key válida
-    if (!MERCADO_PAGO_CONFIG.MP_PUBLIC_KEY || MERCADO_PAGO_CONFIG.MP_PUBLIC_KEY === 'TEST-your-public-key-here') {
-      setPaymentError('Configuración de pago incompleta. La clave pública de Mercado Pago no está configurada correctamente.');
-      return;
-    }
-    
-    setIsLoading(true);
-    setPaymentError(null);
-    
-    try {
-      // Paso 1: Tokenizar la tarjeta con Mercado Pago
-      console.log('Tokenizing card with Mercado Pago...');
-      console.log('Form data:', {
-        cardNumber: formData.cardNumber ? '****-****-****-' + formData.cardNumber.slice(-4) : 'missing',
-        cardholderName: formData.cardholderName || 'missing',
-        expirationMonth: formData.expirationMonth || 'missing',
-        expirationYear: formData.expirationYear || 'missing',
-        securityCode: formData.securityCode ? '***' : 'missing',
-        docType: formData.docType || 'missing',
-        docNumber: formData.docNumber ? '****' + formData.docNumber.slice(-2) : 'missing',
-        email: formData.email || 'missing'
-      });
-      
-      const cardToken = await createCardToken({
-        cardNumber: formData.cardNumber,
-        cardholderName: formData.cardholderName,
-        expirationMonth: formData.expirationMonth,
-        expirationYear: formData.expirationYear,
-        securityCode: formData.securityCode,
-        docType: formData.docType,
-        docNumber: formData.docNumber
-      });
-      
-      const paymentPayload = {
-        idUser: order.idUser,           // ✅ Usuario de la orden
-        idOrder: order.idOrder,         // ✅ ID de la orden
-        paymentMethod: cardToken.payment_method_id,  // ✅ Método de pago de MP
-        installments: 1,                // ✅ Cuotas (1 por defecto)
-        token: cardToken.id,            // ✅ Token de MP
-        email: formData.email           // ✅ Email del usuario
-      };
-      
-      // Paso 3: Enviar pago al backend
-      const result = await processPaymentAction(paymentPayload);
+  // Verificar que Mercado Pago esté cargado
+  if (!isLoaded) {
+    setPaymentError('El sistema de pagos aún se está cargando. Por favor, espera un momento e intenta nuevamente.');
+    return;
+  }
 
-      // Paso 4: Notificar éxito al componente padre
-      if (onSuccess) {
-        onSuccess(result);
+  // Verificar que tengamos la instancia mp
+  if (!mp) {
+    setPaymentError('No se pudo inicializar el sistema de pagos. Por favor, recarga la página.');
+    return;
+  }
+
+  // Verificar que tengamos la public key válida
+  if (!MERCADO_PAGO_CONFIG.MP_PUBLIC_KEY || MERCADO_PAGO_CONFIG.MP_PUBLIC_KEY === 'TEST-your-public-key-here') {
+    setPaymentError('Configuración de pago incompleta. La clave pública de Mercado Pago no está configurada correctamente.');
+    return;
+  }
+
+  setIsLoading(true);
+  setPaymentError(null);
+
+  try {
+    
+    // Limpiar el nombre: remover acentos y caracteres especiales
+    let cleanCardholderName = formData.cardholderName
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '') // Remover acentos
+      .replace(/[^a-zA-Z\s]/g, '') // Solo letras y espacios
+      .trim();
+    
+    // 🔍 Mercado Pago TEST: Solo acepta nombres de prueba específicos
+    const isTestMode = MERCADO_PAGO_CONFIG.MP_PUBLIC_KEY.includes('TEST-');
+    
+    if (isTestMode) {
+      // En modo TEST, usar nombres de prueba válidos de MP
+      const testNames = ['APRO', 'OTHE', 'CONT', 'CALL', 'FUND', 'SECU', 'EXPI', 'FORM', 'Test User'];
+      
+      if (!testNames.includes(cleanCardholderName)) {
+        console.log('🔧 MODO TEST: Convirtiendo nombre real a nombre de prueba');
+        console.log('Nombre original:', cleanCardholderName);
+        cleanCardholderName = 'APRO'; // Por defecto usar APRO (aprobado)
+        console.log('Nombre de prueba usado:', cleanCardholderName);
       }
-      
+    }
+    
+    const cardToken = await createCardToken({
+      cardNumber: formData.cardNumber,
+      cardholderName: cleanCardholderName, // Usar nombre limpio
+      expirationMonth: formData.expirationMonth,
+      expirationYear: formData.expirationYear,
+      securityCode: formData.securityCode,
+      docType: formData.docType,
+      docNumber: formData.docNumber
+    });
+
+    // 2️⃣ Obtener el payment_method_id correcto del first_six_digits
+    let paymentMethodId = 'visa'; // fallback
+    
+    // ✅ Mapeo de BIN (primeros 6 dígitos) a payment_method_id específico
+    const firstSixDigits = cardToken.first_six_digits;
+    
+    if (firstSixDigits) {
+      // Mapeo común de BINs a payment methods específicos para Argentina
+      if (firstSixDigits.startsWith('4')) {
+        // Tarjetas Visa - usar diferentes IDs según el BIN
+        if (firstSixDigits.startsWith('450995')) {
+          paymentMethodId = 'visa'; // Visa estándar
+        } else if (firstSixDigits.startsWith('4509')) {
+          paymentMethodId = 'visa';
+        } else {
+          paymentMethodId = 'visa'; // Visa genérico
+        }
+      } else if (firstSixDigits.startsWith('5')) {
+        paymentMethodId = 'master';
+      } else if (firstSixDigits.startsWith('37') || firstSixDigits.startsWith('34')) {
+        paymentMethodId = 'amex';
+      }
+    }
+  
+
+    // 3️⃣ Armar payload para backend - estructura EXACTA que funciona en Postman
+    
+    // Procesar nombre de forma más robusta
+    const nameParts = cleanCardholderName.trim().split(/\s+/); // Split por cualquier espacio
+    let firstName = nameParts[0] || 'Test';
+    let lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : 'User';
+    
+    // 🔍 Manejo especial para nombres de prueba de MP (que son una sola palabra)
+    const singleWordTestNames = ['APRO', 'OTHE', 'CONT', 'CALL', 'FUND', 'SECU', 'EXPI', 'FORM'];
+    if (singleWordTestNames.includes(cleanCardholderName)) {
+      firstName = cleanCardholderName;
+      lastName = cleanCardholderName; // MP a veces requiere firstName y lastName iguales para nombres de prueba
+    }
+    
+    const paymentPayload = {
+      idOrder: order.idOrder,
+      token: cardToken.id,
+      paymentMethod: paymentMethodId,
+      installments: 1,
+      description: `Pago de orden #${order.idOrder}`,
+      externalReference: `order_${order.idOrder}`,
+      payer: {
+        email: formData.email,
+        firstName: firstName,
+        lastName: lastName,
+        identification: {
+          type: formData.docType,
+          number: String(formData.docNumber)
+        }
+      }
+    };
+    
+    // 5️⃣ Llamar al backend
+    const result = await processPaymentAction(paymentPayload);
+
+    console.log('🔍 RESULTADO DEL PAGO:', result);
+    console.log('Status recibido:', result.status);
+
+    // 6️⃣ Verificar el status del pago y actuar en consecuencia
+    if (result.status === 'APPROVED') {
+      // ✅ Pago aprobado
+      console.log('✅ Pago APROBADO');
+      setPaymentResult('success');
+      if (onSuccess) onSuccess(result);
+    } else if (result.status === 'FAILED') {
+      // ❌ Pago rechazado
+      console.log('❌ Pago RECHAZADO');
+      setPaymentResult('error');
+      setPaymentError('El pago fue rechazado por Mercado Pago. Por favor, verifica los datos de tu tarjeta e intenta nuevamente.');
+      if (onError) onError({ error: 'Pago rechazado', details: result });
+    } else {
+      // ⏳ Pago pendiente u otro estado
+      console.log('⏳ Pago en estado:', result.status);
+      setPaymentResult('error');
+      setPaymentError(`El pago está en estado: ${result.status}. Por favor, contacta al soporte para más información.`);
+      if (onError) onError({ error: `Pago en estado ${result.status}`, details: result });
+    }
+
     } catch (error) {
-      console.error('Payment error:', error);
+      console.error('Error en el pago:', error);
+      console.error('Error details:', JSON.stringify(error, null, 2));
       
-      // Usar la función helper para parsear errores
+      // Si es un error de conexión/red, mostrar mensaje genérico
       const errorMessage = parsePaymentError(error);
+      setPaymentResult('error');
       setPaymentError(errorMessage);
-      
-      // Notificar error al componente padre
-      if (onError) {
-        onError({ error: errorMessage, details: error });
-      }
+      if (onError) onError({ error: errorMessage, details: error });
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Si hay un error de pago y está configurado localmente, mostrarlo
+
+  // Si hay un resultado de pago específico, mostrar la pantalla correspondiente
   if (paymentResult === 'success') {
     return (
       <PaymentSuccess 
         order={order} 
-        onClose={() => {
+        onContinueShopping={() => {
           setPaymentResult(null);
           if (onSuccess) onSuccess();
         }} 
@@ -179,7 +274,7 @@ export const PaymentForm = ({ order, onSuccess, onError, onCancel }) => {
           setPaymentResult(null);
           setPaymentError(null);
         }}
-        onClose={() => {
+        onBackToCart={() => {
           setPaymentResult(null);
           if (onCancel) onCancel();
         }}
@@ -210,19 +305,6 @@ export const PaymentForm = ({ order, onSuccess, onError, onCancel }) => {
             {mpError}
             <br />
             <span className="text-xs">Por favor, recarga la página e intenta nuevamente.</span>
-          </div>
-        </div>
-      )}
-
-      {/* Mostrar error de configuración */}
-      {!MERCADO_PAGO_CONFIG.MP_PUBLIC_KEY && (
-        <div className="p-3 bg-yellow-50 border border-yellow-200 rounded">
-          <div className={`${roboto.className} text-sm text-yellow-700`}>
-            <strong>Configuración incompleta:</strong>
-            <br />
-            La clave pública de Mercado Pago no está configurada.
-            <br />
-            <span className="text-xs">Contacta al administrador del sitio.</span>
           </div>
         </div>
       )}

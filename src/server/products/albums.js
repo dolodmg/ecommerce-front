@@ -1,6 +1,6 @@
 'use server';
 
-import { getAll, getAlbum, getAlbumsByArtist, getAlbumsByFormat, getAlbumsByPriceRange, createAlbum, editAlbum, deleteAlbum, getFormats, getAlbumGenres } from '@/lib/api/products/apiAlbums';
+import { getAll, getAlbum, getAlbumsByArtist, getAlbumsByFormat, getAlbumsByPriceRange, createAlbum, editAlbum, deleteAlbum, getFormats, getAlbumGenres, getPopAlbumsByDateDesc } from '@/lib/api/products/apiAlbums';
 
 export async function getAllAction() {
     const { data } = await getAll();
@@ -49,5 +49,10 @@ export async function getFormatsAction() {
 
 export async function getAlbumGenresAction() {
     const { data } = await getAlbumGenres();
+    return data;
+}
+
+export async function getPopAlbumsByDateDescAction() {
+    const { data } = await getPopAlbumsByDateDesc();
     return data;
 }

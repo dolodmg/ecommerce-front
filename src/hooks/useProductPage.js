@@ -32,13 +32,10 @@ export function useProductPage(category) {
                 } else if (category === 'BOOKS') {
                     genre = searchParams.get('genre') || '';
                 } else if (category === 'BOARDGAMES') {
-                    // Boardgames normalmente no tienen filtros específicos en este API
-                    // Podrían usar genre si tienen categorías
                     genre = searchParams.get('boardgameGenre') || '';
                 }
                 
                 const data = await getFilteredAction(category, minPrice, maxPrice, genre, albumFormat, albumGenre);
-                console.log('✅ Products fetched successfully:', data?.length || 0, 'items');
                 setProducts(data);
             } catch (err) {
                 setError('Error al obtener los productos');
@@ -49,7 +46,7 @@ export function useProductPage(category) {
         };
 
         fetchProducts();
-    }, [searchParams, category]); // Cambio: volver a usar searchParams directamente
+    }, [searchParams, category]); 
 
     return {
         products,

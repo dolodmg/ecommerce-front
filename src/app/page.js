@@ -1,16 +1,20 @@
 import React from "react";
+import { PaymentOptions } from "@/components/home/paymentOptions";
 import CategoriesBanner from "@/components/categories/categoriesBanner";
-import Link from "next/link";
+import { BestSellerSection } from "@/components/home/bestSellerSection";
+import { PopAlbumsSection } from "@/components/home/popAlbumsSection";
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <CategoriesBanner />
-      <div className="mt-8">
-        <Link href="/products" className="text-blue-500 hover:underline">
-          Producto
-        </Link>
+    <main className="flex flex-col items-center min-h-screen bg-white">
+      <div className="pt-8">
+        <PaymentOptions />
       </div>
+      <BestSellerSection limit={5} />
+      <div className="pt-8">
+          <CategoriesBanner />
+        </div>
+      <PopAlbumsSection limit={5} />
     </main>
   );
 }

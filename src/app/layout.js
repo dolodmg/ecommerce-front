@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from 'next/script';
 import "./globals.css";
 import Navbar from "@/components/navbar";
 import { Providers } from "./provider";
@@ -21,6 +22,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <Script
+          src="https://sdk.mercadopago.com/js/v2"
+          strategy="beforeInteractive"
+        />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>
           <Navbar />

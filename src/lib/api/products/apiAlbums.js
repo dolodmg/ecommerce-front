@@ -42,3 +42,7 @@ export async function getFormats() {
 export async function getAlbumGenres() {
     return await apiRequest(`${BASE_URL}/get/genres`, 'GET', null, 'application/json', false);
 }
+
+export async function getPopAlbumsByDateDesc() {
+    return await apiRequest(`${BASE_URL}/get/pop-by-date`, 'GET', null, 'application/json', false);
+}

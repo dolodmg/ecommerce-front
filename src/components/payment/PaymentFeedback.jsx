@@ -88,17 +88,17 @@ export const PaymentError = ({ error, order, onRetry, onBackToCart }) => {
         <XCircle className="w-12 h-12 text-red-600" />
       </div>
       
-      <h1 className={`${roboto.className} text-3xl font-bold text-red-800 mb-2`}>
-        Error en el Pago
+      <h1 className={`${newsreader.className} text-4xl font-semibold text-red-800 mb-2`}>
+        Error en el pago
       </h1>
       
-      <p className={`${roboto.className} text-gray-600 mb-6`}>
+      <p className={`${roboto.className} text-zinc-600 mb-6`}>
         No se pudo procesar tu pago
       </p>
       
       <Card className="max-w-md mx-auto mb-8">
         <CardHeader>
-          <CardTitle className="text-center">Detalles del Error</CardTitle>
+          <CardTitle className={`${roboto.className} text-center text-zinc-800 font-medium`}>Detalles del error</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="text-sm text-gray-700 bg-red-50 p-4 rounded border border-red-200">
@@ -113,24 +113,24 @@ export const PaymentError = ({ error, order, onRetry, onBackToCart }) => {
         </CardContent>
       </Card>
       
-      <div className="space-y-4 max-w-md mx-auto">
+      <div className={`${roboto.className} space-y-4 max-w-md mx-auto font-normal text-md`}>
         <Button
           onClick={onRetry}
           variant="default"
-          className="w-full"
+          className="w-full flex flex-row justify-center items-center"
           size="lg"
         >
           <RotateCcw className="w-4 h-4 mr-2" />
-          Reintentar Pago
+          Reintentar pago
         </Button>
         
         <Button
           onClick={onBackToCart}
           variant="outline"
-          className="w-full"
+          className="w-full flex flex-row justify-center items-center"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Volver al Carrito
+          Volver al carrito
         </Button>
       </div>
     </div>
