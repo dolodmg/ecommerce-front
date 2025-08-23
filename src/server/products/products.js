@@ -1,5 +1,5 @@
 'use server';
-import { getProducts, getProductById, updateStock, getFiltered } from '@/lib/api/products/apiProducts';
+import { getProducts, getProductById, updateStock, getFiltered, searchProducts } from '@/lib/api/products/apiProducts';
 
 export async function getProductsAction() {
     const { data } = await getProducts();
@@ -18,5 +18,10 @@ export async function updateStockAction(idProduct, quantity) {
 
 export async function getFilteredAction(category, minPrice, maxPrice, genre, albumFormat, albumGenre) {
     const { data } = await getFiltered(category, minPrice, maxPrice, genre, albumFormat, albumGenre);
+    return data;
+}
+
+export async function searchProductsAction(keyword) {
+    const { data } = await searchProducts(keyword);
     return data;
 }

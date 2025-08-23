@@ -26,3 +26,7 @@ export async function getFiltered(category, minPrice, maxPrice, genre, albumForm
     const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
     return await apiRequest(`${BASE_URL}/get/filtered${queryString}`, 'GET', null, 'application/json', false);
 }
+
+export async function searchProducts(keyword) {
+    return await apiRequest(`${BASE_URL}/search?keyword=${keyword}`, 'GET', null, 'application/json', false);
+}
