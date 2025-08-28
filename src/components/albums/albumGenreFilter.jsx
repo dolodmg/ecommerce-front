@@ -41,7 +41,7 @@ const AlbumGenreFilter = () => {
             <p className={`${roboto.className} font-medium text-zinc-800`}>
             GÉNERO
             </p>
-            <div className={`${inter.className} flex flex-col gap-1 text-sky-950 font-medium`}>
+            <div className={`${inter.className} flex flex-col gap-1 text-green-950 font-medium`}>
                 { genres && genres.length > 0 ? (
                     genres.map(albumGenre => (
                         <Link 

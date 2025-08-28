@@ -26,7 +26,7 @@ export const SearchInput = ({onSearch}) => {
             className={`${roboto.className} h-10 text-zinc-600 font-light rounded-none border-none focus:outline-4`}
             />
             <button type="submit" className='cursor-pointer h-10 px-2 flex items-center justify-center'>
-                <SearchIcon size={22} className='text-slate-800'/>
+                <SearchIcon size={22} className='text-pink-400'/>
             </button>
         </form>
     )

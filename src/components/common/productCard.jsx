@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getProductByIdAction } from "@/server/products/products";
-import { Roboto } from "next/font/google";
+import { Roboto, Inter } from "next/font/google";
 import ProductStockAlert from "@/components/common/productStockAlert";
 import { ProductImage } from "./productImage";
 import Button from "@/components/ui/button";
@@ -10,6 +10,12 @@ import { useCart } from "@/hooks/useCart";
 import { useCartData } from "@/hooks/useCartData";
 
 const roboto = Roboto(
+  { subsets: ['latin'], 
+    weight: ['100', '200', '300', '400', '500', '700', '900']
+  }
+);
+
+const inter = Inter(
   { subsets: ['latin'], 
     weight: ['100', '200', '300', '400', '500', '700', '900']
   }
@@ -61,7 +67,7 @@ export default function ProductCard({ idProduct }) {
     if (loading) return <p>Cargando producto</p>;
     if (error) return <p>{error}</p>;
     return (
-        <div className={`flex flex-col w-50 p-4 border border-zinc-200 rounded-sm`}>
+        <div className={`flex flex-col w-50 p-4 border border-green-900 rounded-lg`}>
             <Link href={`/products/${product.idProduct}`} className="block">
                 <ProductImage product={product} className="object-cover w-full h-40 my-1 cursor-pointer hover:opacity-90 transition-opacity"/>
             </Link>
@@ -82,12 +88,12 @@ export default function ProductCard({ idProduct }) {
             </p>
             <div className="relative flex flex-col items-center w-full">
                 <Button 
-                className="py-2 px-4 mb-2 text-xs text-white bg-slate-700 hover:bg-slate-600 w-full"
+                className={`${inter.className} py-2 px-4 mb-2 text-sm font-light text-white bg-green-900 hover:cursor-pointer hover:bg-green-950 rounded-full w-full`}
                 onClick={handleAddToCart}
                 text={
                     <div className="flex flex-row justify-center items-center gap-1">
                         <ShoppingBasket strokeWidth={1} size={18} />
-                        COMPRAR
+                        Comprar
                     </div>
                 }
                 />

@@ -122,7 +122,7 @@ export function CartSummary({
                 <Button
                     onClick={handleCheckout}
                     disabled={isActionDisabled}
-                    className="w-full"
+                    className="w-full bg-green-900 hover:bg-green-950"
                     size="lg"
                 >
                     {isCreatingOrder ? 'Creando orden...' : 

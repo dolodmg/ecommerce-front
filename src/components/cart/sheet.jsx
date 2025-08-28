@@ -33,7 +33,7 @@ export function CartSheet({
 
     const defaultTrigger = (
         <CartIcon 
-            className="hover:text-blue-600 transition-colors"
+            className="hover:text-pink-400 text-pink-300 transition-colors"
             onClick={() => setIsOpen(true)}
         />
     );

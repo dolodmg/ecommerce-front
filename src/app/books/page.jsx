@@ -15,7 +15,7 @@ const BooksPage = () => {
 
     return (
         <ProductPageLayout
-            title="Libros"
+            title="libros"
             products={books}
             loading={loading}
             error={error}

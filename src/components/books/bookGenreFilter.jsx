@@ -36,7 +36,7 @@ const BookGenreFilter = () => {
     return (
         <div className={`${inter.className} flex flex-col text-xs gap-1`}>
             <p className="font-medium text-zinc-800 mb-1">GÉNERO LITERARIO</p>
-            <div className="flex flex-col gap-1 text-sky-950 font-medium">
+            <div className="flex flex-col gap-1 text-green-950 font-medium">
                 {genres && genres.length > 0 ? (
                     <>
                         {(showAll ? genres : genres.slice(0, VISIBLE_COUNT)).map(genre => (
@@ -47,7 +47,7 @@ const BookGenreFilter = () => {
                         ))}
                         {genres.length > VISIBLE_COUNT && (
                             <button
-                                className="text-xs text-blue-600 hover:underline mt-1 text-left w-fit"
+                                className="text-xs text-blue-700 hover:underline mt-1 text-left w-fit"
                                 onClick={() => setShowAll(!showAll)}
                             >
                                 {showAll ? 'Ver menos' : 'Ver más'}
