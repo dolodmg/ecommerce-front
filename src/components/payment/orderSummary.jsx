@@ -71,7 +71,7 @@ export const OrderSummary = ({ order }) => {
                     <div className="text-center">
                         <span className="text-xs text-gray-500">Estado: </span>
                         <span className={`text-xs font-medium ${
-                            order.status === 'PENDING' ? 'text-yellow-600' :
+                            order.status === 'PENDING' ? 'text-pink-400' :
                             order.status === 'PAID' ? 'text-green-600' :
                             order.status === 'CANCELLED' ? 'text-red-600' :
                             'text-gray-600'

@@ -457,7 +457,7 @@ export const PaymentForm = ({ order, onSuccess, onError, onCancel }) => {
               <Button
                 type="submit"
                 disabled={isLoading || !isLoaded || mpLoading || !!mpError || !MERCADO_PAGO_CONFIG.MP_PUBLIC_KEY}
-                className="flex-1"
+                className="flex-1 bg-green-900 hover:bg-green-950"
               >
                 {isLoading ? "Procesando..." : "Pagar"}
               </Button>

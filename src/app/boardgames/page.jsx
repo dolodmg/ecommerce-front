@@ -15,7 +15,7 @@ export default function BoardgamePage() {
 
     return (
         <ProductPageLayout
-            title="Juegos de mesa"
+            title="juegos de mesa"
             products={boardgames}
             loading={loading}
             error={error}

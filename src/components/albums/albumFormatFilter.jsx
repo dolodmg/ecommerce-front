@@ -41,7 +41,7 @@ const AlbumFormatFilter = () => {
             <p className={`${roboto.className} font-medium text-zinc-800`}>
             FORMATO
             </p>
-            <div className={`${inter.className} flex flex-col gap-1 text-sky-950 font-medium`}>
+            <div className={`${inter.className} flex flex-col gap-1 text-green-950 font-medium`}>
                 { formats && formats.length > 0 ? (
                     formats.map(albumFormat => (
                         <Link 

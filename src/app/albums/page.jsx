@@ -38,7 +38,7 @@ const AlbumsPage = () => {
 
     return (
         <ProductPageLayout
-            title="Álbumes"
+            title="música"
             products={albums}
             loading={loading}
             error={error}

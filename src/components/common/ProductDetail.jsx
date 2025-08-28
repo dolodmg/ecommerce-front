@@ -53,7 +53,7 @@ const ProductDetail = ({ product, quantity, onAdd, onRemove }) => {
         <div className="flex-1 flex flex-col gap-1">
           <h1 className="text-sm md:text-3xl font-light text-zinc-800">{product.name}</h1>
           {(isBook || isMusic ) && (
-            <p className="text-sm text-sky-900 font-normal">
+            <p className="text-sm text-green-950 font-normal">
               {isBook && <>{product.person?.firstName} {product.person?.lastName}</>}
               {isMusic && <>{product.person?.firstName} {product.person?.lastName}</>}
             </p>
@@ -67,7 +67,7 @@ const ProductDetail = ({ product, quantity, onAdd, onRemove }) => {
               className="w-full"
             />
             <div className="relative flex flex-col items-center w-full">
-              <Button onClick={handleAddToCart} text="AGREGAR AL CARRITO" className="py-3 px-6 mb-2 text-sm rounded-full text-white bg-slate-700 w-full" />
+              <Button onClick={handleAddToCart} text="AGREGAR AL CARRITO" className="py-3 px-6 mb-2 text-sm rounded-full text-white bg-green-900 hover:cursor-pointer hover:bg-green-950 w-full" />
               {showAlert && (
                 <div className="absolute top-full mt-2 w-full flex justify-center">
                   <ProductStockAlert description={null} />

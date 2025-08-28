@@ -110,9 +110,9 @@ export function PaymentPageContainer({ idOrder }) {
                         {orderError || 'No se pudo encontrar la información de esta orden'}
                     </p>
                 </div>
-                <Button onClick={handleBackToCart} variant="outline">
+                <Button onClick={handleBackToCart} variant="outline" className="flex flex-row gap-1">
                     <ArrowLeft className="w-4 h-4 mr-2" />
-                    Volver al carrito
+                    <p>Volver al carrito</p>
                 </Button>
             </div>
         );

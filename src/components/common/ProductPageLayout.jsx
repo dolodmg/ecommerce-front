@@ -2,6 +2,9 @@
 import React from "react";
 import { FiFilter } from "react-icons/fi";
 import ProductCard from "@/components/common/productCard";
+import { Concert_One } from 'next/font/google';
+
+const concertOne = Concert_One({ subsets: ['latin'], weight: ['400'] });
 
 export default function ProductPageLayout({ 
     title, 
@@ -35,7 +38,7 @@ export default function ProductPageLayout({
     return (
         <main className="bg-zinc-50 min-h-screen">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <h1 className="text-3xl font-bold mb-6 text-zinc-800 tracking-tight">{title}</h1>
+                <h1 className={`${concertOne.className} text-5xl font-extrabold mb-6 text-pink-300 [-webkit-text-stroke:1.5px_#14532d] tracking-tight`}>{title}</h1>
                 <div className="flex gap-8">
                     <aside className="hidden lg:block w-72">
                         <div className="sticky top-24 bg-white rounded-xl shadow p-6 border border-zinc-100">

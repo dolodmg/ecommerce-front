@@ -2,10 +2,9 @@
 import React from "react";
 import { usePopAlbums } from '@/hooks/usePopAlbums';
 import ProductCard from '@/components/common/productCard';
-import { Newsreader } from 'next/font/google';
+import { Concert_One } from 'next/font/google';
 
-const newsreader = Newsreader({ subsets: ['latin'], weight: ['200', '300', '400', '500', '600', '700'] });
-
+const concertOne = Concert_One({ subsets: ['latin'], weight: ['400'] });
 
 export const PopAlbumsSection = ({ limit = 5 }) => {
     const { popAlbums, loading, error } = usePopAlbums();
@@ -23,8 +22,8 @@ export const PopAlbumsSection = ({ limit = 5 }) => {
         <section className="w-full max-w-7-xl mx-auto px-4 py-12">
             <div className="flex items-center my-6">
                 <div className="flex-grow border-t border-zinc-300"></div>
-                    <h2 className={`${newsreader.className} text-2xl font-normal text-center text-zinc-900 mx-4`}>
-                        Lo último en música pop
+                    <h2 className={`${concertOne.className} text-4xl font-extrabold text-center text-pink-300 [-webkit-text-stroke:1.5px_#14532d] mx-4`}>
+                        lo último en música pop
                     </h2>
                 <div className="flex-grow border-t border-zinc-300"></div>
             </div>

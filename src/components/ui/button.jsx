@@ -42,7 +42,7 @@ const Button = ({
           disabled={disabled}
           className={cn(
             roboto.className,
-            "rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none",
+            "rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none hover:cursor-pointer",
             variantClass,
             sizeClass,
             className

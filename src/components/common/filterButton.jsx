@@ -12,7 +12,7 @@ const FilterButton = ({ onClick }) => {
     return (
         <button 
         onClick={onClick}
-        className={`${roboto.className} mt-2 text-sm font-light text-white bg-slate-700 hover:bg-slate-800 rounded-full px-3 py-1`}>
+        className={`${roboto.className} mt-2 text-sm font-light text-white bg-green-900 hover:bg-green-950 rounded-full px-3 py-1`}>
         Aplicar
         </button>
     );
